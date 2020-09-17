@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "658079098240",
+    "firebase_url": "https://maapp-dc95e.firebaseio.com",
+    "project_id": "maapp-dc95e",
+    "storage_bucket": "maapp-dc95e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658079098240:android:b5523eec7504af2e03cd65",
+        "android_client_info": {
+          "package_name": "com.example.projeto_ma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658079098240-vhoi7v2tel3hriaf247egha114n6e01n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIDrucrkUX-3A-tEEtVz2t8mdoDqOVoVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658079098240-vhoi7v2tel3hriaf247egha114n6e01n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
