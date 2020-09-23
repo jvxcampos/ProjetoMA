@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_ma/telas/login.dart';
+import 'package:projeto_ma/rotas.dart';
+import 'package:projeto_ma/telas/anuncios.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 final ThemeData temaMa = ThemeData(
@@ -7,15 +8,15 @@ final ThemeData temaMa = ThemeData(
   accentColor: Color(0xff321e24),
 );
 
-void main() 
-async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-  title: "Meu Armário",
-  home: Login(),
-  theme: temaMa ,
-  debugShowCheckedModeBanner: false,
-));
-
+    title: "Meu Armário",
+    home: Anuncios(),
+    initialRoute: "/",
+    onGenerateRoute: RotaG.gerarRota,
+    theme: temaMa,
+    debugShowCheckedModeBanner: false,
+  ));
 }

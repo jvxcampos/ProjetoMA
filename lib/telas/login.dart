@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:projeto_ma/modelos/Userma.dart';
+import 'package:projeto_ma/telas/BotaoCustomizado.dart';
 import 'package:projeto_ma/telas/InputCustomizado.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -27,6 +28,7 @@ class _LoginState extends State<Login> {
             email: userma.email, password: userma.senha)
         .then((firebaseUser) {
       //redireciona para a tela principal
+      Navigator.pushReplacementNamed(context, "/");
     });
   }
 
@@ -40,6 +42,7 @@ class _LoginState extends State<Login> {
     )
         .then((firebaseUser) {
       //redireciona para a tela principal
+      Navigator.pushReplacementNamed(context, "/");
     });
   }
 
@@ -126,17 +129,10 @@ class _LoginState extends State<Login> {
                   Text("Cadastrar"),
                 ],
               ),
-              RaisedButton(
-                child: Text(
-                  _textoBotao,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                color: Color(0xff321e24),
-                padding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                onPressed: () {
-                  _validarCampos();
-                },
-              ),
+              BotaoCustomizado(
+                texto: _textoBotao,
+                onPressed:  (){_validarCampos();
+                }),
               Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
