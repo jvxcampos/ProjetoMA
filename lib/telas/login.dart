@@ -108,7 +108,8 @@ class _LoginState extends State<Login> {
               InputCustomizado(
                 controller: _controllerSenha,
                 hint: "Senha",
-                obscure: true,
+                maxLines: 1,
+                obscure: true,         
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

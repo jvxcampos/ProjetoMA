@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projeto_ma/modelos/anunciox.dart';
 import 'package:projeto_ma/telas/BotaoCustomizado.dart';
 import 'package:projeto_ma/telas/InputCustomizado.dart';
 import 'dart:io';
@@ -21,6 +23,8 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
 
   final _formKey = GlobalKey<FormState>();
 
+  Anunciox _anuncio;
+
   String _itemSelecionadoEstado;
   String _itemSelecionadoCategoria;
 
@@ -37,6 +41,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
   void initState(){
     super.initState();
     _carregarItens();
+
+      _anuncio = Anunciox();
+
   }
 
   _carregarItens(){
@@ -188,6 +195,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                         child: DropdownButtonFormField(
                               value: _itemSelecionadoEstado,
                               hint: Text("Estados"),
+                              onSaved: (estado){
+                                _anuncio.estado = estado;
+                              },
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20
@@ -212,6 +222,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                         child: DropdownButtonFormField(
                               value: _itemSelecionadoCategoria,
                               hint: Text("Categorias"),
+                              onSaved: (categoria){
+                                _anuncio.categoria = categoria;
+                              },
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 20
@@ -237,6 +250,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                   padding: EdgeInsets.only(bottom:15, top: 15),
                   child:InputCustomizado(
                   hint: "Nome da peça",
+                   onSaved: (nomepeca){
+                                _anuncio.nomepeca = nomepeca;
+                              },
                   validator: (valor){
                     return Validador()
                                 .add(Validar.OBRIGATORIO, msg: "Campo obrigatório")
@@ -248,6 +264,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                   padding: EdgeInsets.only(bottom:15),
                   child:InputCustomizado(
                   hint: "Preço",
+                   onSaved: (preco){
+                                _anuncio.preco = preco;
+                              },
                   type: TextInputType.number,
                   inputFormatters: [
                     WhitelistingTextInputFormatter.digitsOnly,
@@ -264,6 +283,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                   padding: EdgeInsets.only(bottom:15),
                   child:InputCustomizado(
                   hint: "Contato",
+                   onSaved: (contato){
+                                _anuncio.contato = contato;
+                              },
                   type: TextInputType.number,
                   inputFormatters: [
                     WhitelistingTextInputFormatter.digitsOnly,
@@ -281,6 +303,9 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                   padding: EdgeInsets.only(bottom:15),
                   child:InputCustomizado(
                   hint: "Descrição",
+                  onSaved: (descricao){
+                                _anuncio.descricao = descricao;
+                              },
                   maxLines: null,
                   validator: (valor){
                     return Validador()
@@ -293,7 +318,44 @@ class _NovoAnuncioState extends State<NovoAnuncio> {
                 BotaoCustomizado(
                   texto: "Cadastrar Peça",
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {}
+                    if (_formKey.currentState.validate()) {
+
+                      _formKey.currentState.save();
+
+                        Future _uploadImagens() async{
+
+                            FirebaseStorage storage = FirebaseStorage.instance;
+                            StorageReference pastaRaiz = storage.ref();
+
+                            for (var imagem in _listaImagens){
+
+                              String nomeImagem = DateTime.now().millisecondsSinceEpoch.toString();
+                              StorageReference arquivo = pastaRaiz
+                                .child("meus_anuncios")
+                                .child( _anuncio.id )
+                                .child( nomeImagem );
+
+                                StorageUploadTask uploadTask = arquivo.putFile(imagem);
+                                StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+
+                                String url = await taskSnapshot.ref.getDownloadURL();
+                                _anuncio.fotos.add(url);
+
+                            }
+
+                      _salvarAnunciox() async {
+
+                        await _uploadImagens();
+
+                        print("lista imagens: ${_anuncio.fotos.toString()}");
+
+
+                      }
+
+                        
+                        }
+
+                    }
                   },
                 ),
               ],
